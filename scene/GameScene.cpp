@@ -1,10 +1,25 @@
 #include "GameScene.h"
 #include "TextureManager.h"
 #include <cassert>
+#include "Player.h"
 
-GameScene::GameScene() {}
+GameScene::GameScene() {
+	// ビュープロジェクションの初期化
+	viewProjection_.Initialize();
 
-GameScene::~GameScene() {}
+	// プレイヤー
+	textureHandlePlayer_ = TextureManager::Load("Player.png");
+	modelPlayer_ = Model::Create();
+	player_ = new Player();
+	player_->Initialize(modelPlayer_, textureHandlePlayer_);
+
+}
+
+GameScene::~GameScene() {
+	// プレイヤー
+	delete player_;
+
+}
 
 void GameScene::Initialize() {
 
@@ -13,7 +28,11 @@ void GameScene::Initialize() {
 	audio_ = Audio::GetInstance();
 }
 
-void GameScene::Update() {}
+void GameScene::Update() { 
+
+	player_->Update(); 
+
+}
 
 void GameScene::Draw() {
 
@@ -39,6 +58,9 @@ void GameScene::Draw() {
 	Model::PreDraw(commandList);
 
 	/// <summary>
+
+	player_->Draw(viewProjection_);
+
 	/// ここに3Dオブジェクトの描画処理を追加できる
 	/// </summary>
 
