@@ -4,6 +4,16 @@
 #include "ImGuiManager.h"
 #include "WorldTransform.h"
 
+Player::Player() {}
+
+Player::~Player() { 
+	// bulletの解放
+	for (PlayerBullet* bullet : bullets_) {
+		 delete bullet;
+	}
+
+}
+
 // 初期化
 void Player::Initialize(Model* model, uint32_t textureHandle) {
 	// NULLポインタチェック
@@ -62,8 +72,8 @@ void Player::Update() {
 	Attack();
 
 	// 弾更新
-	if (bullet_) {
-		bullet_->Update();
+	for (PlayerBullet* bullet : bullets_) {
+		bullet->Update();
 	
 	}
 
@@ -95,9 +105,11 @@ void Player::Draw(ViewProjection viewProjection) {
 	model_->Draw(worldTransform_, viewProjection, textureHandle_);
 
 	// 弾描画
-	if (bullet_) {
-		bullet_->Draw(viewProjection);
+	for (PlayerBullet* bullet : bullets_) {
+		bullet->Draw(viewProjection);
+	
 	}
+
 }
 
 // 自機回転
@@ -118,12 +130,13 @@ void Player::Rotate() {
 void Player::Attack() {
 	// 処理
 	if (input_->TriggerKey(DIK_SPACE)) {
+		
 	    // 弾を生成し、初期化
 		PlayerBullet* newBullet = new PlayerBullet();
 		newBullet->Initialize(model_, worldTransform_.translation_);
 
 		// 弾をセット
-		bullet_ = newBullet;
+		bullets_.push_back(newBullet);
 	}
 
 }
