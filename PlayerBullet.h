@@ -2,27 +2,19 @@
 #include "Model.h"
 #include "ViewProjection.h"
 #include "WorldTransform.h"
-#include "Input.h"
-#include "PlayerBullet.h"
 
-// 自キャラ
-class Player {
 
+// 自キャラの弾
+class PlayerBullet {
 public:
 	// 初期化
-	void Initialize(Model* model, uint32_t textureHandle);
+	void Initialize(Model* model, const Vector3& position);
 
 	// 更新
 	void Update();
 
 	// 描画
-	void Draw(ViewProjection viewProjection);
-
-	// 回転
-	void Rotate();
-
-	// 攻撃
-	void Attack();
+	void Draw(const ViewProjection& viewProjection);	
 
 private:
 	// ワールド変換データ
@@ -31,9 +23,5 @@ private:
 	Model* model_ = nullptr;
 	// テクスチャハンドル
 	uint32_t textureHandle_ = 0u;
-	// キーボード入力
-	Input* input_ = nullptr;
-	// 弾
-	PlayerBullet* bullet_ = nullptr;
 
 };
