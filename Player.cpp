@@ -1,5 +1,6 @@
 ﻿#include "Player.h"
 #include <cassert>
+#include "Vector3.h"
 #include "Mathfunction.h"
 #include "ImGuiManager.h"
 #include "WorldTransform.h"
@@ -42,8 +43,16 @@ void Player::Update() {
 	// 移動速度
 	const float kCharacterSpeed = 0.2f;
 
-	// 入力した方向で移動ベクトルを変更
+	// デスフラグが立った弾を削除
+	bullets_.remove_if([](PlayerBullet* bullet){
+		if (bullet->IsDead()) {
+			delete bullet;
+			return true;
+		}
+		return false;
+	});
 
+	// 入力した方向で移動ベクトルを変更
 	// 左
 	if (input_->PushKey(DIK_A)) {
 		move.x -= kCharacterSpeed;
@@ -66,7 +75,7 @@ void Player::Update() {
 	Rotate();
 
 	// 移動処理
-	worldTransform_.translation_ = Add(worldTransform_.translation_, move);
+	worldTransform_.translation_ = VectorAdd(worldTransform_.translation_, move);
 
 	// 攻撃
 	Attack();
@@ -131,9 +140,16 @@ void Player::Attack() {
 	// 処理
 	if (input_->TriggerKey(DIK_SPACE)) {
 		
+		// 弾の速度
+		const float kBulletSpeed = 1.0f;
+		Vector3 velocity(0, 0, kBulletSpeed);
+
+		// 速度ベクトルを自機の向きに合わせて回転させる
+		velocity = TransformNormal(velocity, worldTransform_.matWorld_);
+
 	    // 弾を生成し、初期化
 		PlayerBullet* newBullet = new PlayerBullet();
-		newBullet->Initialize(model_, worldTransform_.translation_);
+		newBullet->Initialize(model_, worldTransform_.translation_,velocity);
 
 		// 弾をセット
 		bullets_.push_back(newBullet);
