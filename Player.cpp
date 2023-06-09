@@ -97,7 +97,6 @@ void Player::Update() {
 	worldTransform_.translation_.y = min(worldTransform_.translation_.y, kMoveLimitY);
 
 	
-
 	// デバック
 	ImGui::Begin("Debug1");
 	ImGui::Text(
