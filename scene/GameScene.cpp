@@ -2,6 +2,7 @@
 #include "TextureManager.h"
 #include <cassert>
 #include "Player.h"
+#include "Enemy.h"
 #include "AxisIndicator.h"
 
 GameScene::GameScene() {
@@ -14,11 +15,18 @@ GameScene::GameScene() {
 	player_ = new Player();
 	player_->Initialize(modelPlayer_, textureHandlePlayer_);
 
+	// エネミー
+	texturehandleEnemy_ = TextureManager::Load("naitou5.jpg");
+	modelEnemy_ = Model::Create();
+	enemy_ = new Enemy();
+	enemy_->Initialize(modelEnemy_, texturehandleEnemy_);
 }
 
 GameScene::~GameScene() {
 	// プレイヤー
 	delete player_;
+	// エネミー
+	delete enemy_;
 	// デバックカメラ
 	delete debugCamera_;
 
@@ -43,6 +51,10 @@ void GameScene::Initialize() {
 void GameScene::Update() { 
 
 	player_->Update(); 
+
+	if (enemy_ != nullptr) {
+		enemy_->Update();
+	}
 
 	#ifdef _DEBUG
 	// デバックカメラ有効フラグ
@@ -93,6 +105,12 @@ void GameScene::Draw() {
 	/// <summary>
 
 	player_->Draw(viewProjection_);
+
+	if (enemy_ != nullptr) {
+		enemy_->Draw(viewProjection_);
+	}
+	   
+	
 
 	/// ここに3Dオブジェクトの描画処理を追加できる
 	/// </summary>

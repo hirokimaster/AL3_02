@@ -9,6 +9,7 @@
 #include "ViewProjection.h"
 #include "WorldTransform.h"
 #include "Player.h"
+#include "Enemy.h"
 #include "DebugCamera.h"
 
 /// <summary>
@@ -34,6 +35,12 @@ public: // メンバ関数
 	Player* player_ = nullptr;
 	uint32_t textureHandlePlayer_ = 0;
 	Model* modelPlayer_ = nullptr;
+
+	// エネミー
+	Enemy* enemy_ = nullptr;
+	uint32_t texturehandleEnemy_ = 0;
+	Model* modelEnemy_ = nullptr;
+
 
 	/// <summary>
 	/// デストラクタ
