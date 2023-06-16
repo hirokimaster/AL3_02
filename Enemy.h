@@ -3,7 +3,14 @@
 #include "ViewProjection.h"
 #include "WorldTransform.h"
 
-///敵
+// 行動フェーズ
+enum class Phase {
+    Approach, // 接近する
+    Leave,    // 離脱する
+
+};
+
+// 敵
 class Enemy {
 public:
 	// コンストラクタ
@@ -21,6 +28,10 @@ public:
 	// 描画
 	void Draw(ViewProjection viewProjection);
 
+	// swich　フェーズごとの更新
+	void ApproachUpdate(Vector3& move);
+	void Leave(Vector3& move);
+
 private:
 
 	// ワールドトランスフォーム
@@ -29,5 +40,6 @@ private:
 	Model* model_;
 	// テクスチャ
 	uint32_t textureHandle_ = 0u;
-
+	// フェーズ
+	Phase phase_ = Phase::Approach;
 };
