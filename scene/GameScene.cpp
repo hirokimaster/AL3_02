@@ -40,6 +40,9 @@ void GameScene::Initialize() {
 
 	// デバックカメラ生成
 	debugCamera_ = new DebugCamera(1920, 1080);
+	
+	// 敵キャラに自キャラのアドレスを渡す
+	enemy_->SetPlayer(player_);
 
 	// 軸方向の表示を有効にする
 	AxisIndicator::GetInstance()->SetVisible(true);

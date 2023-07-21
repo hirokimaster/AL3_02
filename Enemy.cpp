@@ -1,4 +1,5 @@
 ﻿#include "Enemy.h"
+#include "Player.h"
 #include "Mathfunction.h"
 #include <cassert>
 #include <list>
@@ -70,9 +71,16 @@ void Enemy::Update(){
 // 攻撃
 void Enemy::Fire() {
 	
+	assert(player_);
+
 	// 弾の速度
-	const float kBulletSpeed = -1.0f;
-	Vector3 velocity(0, 0, kBulletSpeed);
+	const float kBulletSpeed = 0.05f;
+
+	Vector3 playerWorldPos = player_->GetWorldPosition(); // 自キャラのワールド座標を取得
+	Vector3 enemyWorldPos = GetWorldPosition(); // 敵キャラのワールド座標を取得
+	Vector3 diff = Vec3Subtract(playerWorldPos, enemyWorldPos); // 差分ベクトルを求める
+	Normalize(diff); // 正規化
+	Vector3 velocity = Vec3Multiply(kBulletSpeed, diff); // ベクトルの速度
 
 	// 弾を生成して初期化
 	EnemyBullet* newBullet = new EnemyBullet();
@@ -118,7 +126,7 @@ void Enemy::ApproachUpdate(Vector3& move) {
 	const float enemySpeed = 0.2f;
 	// 移動
 	move.z -= enemySpeed;
-	worldTransform_.translation_ = VectorAdd(worldTransform_.translation_, move);
+	worldTransform_.translation_ = Vec3Add(worldTransform_.translation_, move);
 	// 規定の位置に到達したら離脱
 	if (worldTransform_.translation_.z < 0.0f) {
 		phase_ = Phase::Leave;
@@ -132,5 +140,16 @@ void Enemy::Leave(Vector3& move) {
 	// 移動
 	move.x -= enemySpeed;
 	move.y += enemySpeed;
-	worldTransform_.translation_ = VectorAdd(worldTransform_.translation_, move);
+	worldTransform_.translation_ = Vec3Add(worldTransform_.translation_, move);
+}
+
+// ワールド座標を取得
+Vector3 Enemy::GetWorldPosition() {
+	Vector3 worldPos;
+	// ワールド行列の平行移動成分を取得（ワールド座標）
+	worldPos.x = worldTransform_.matWorld_.m[3][0];
+	worldPos.y = worldTransform_.matWorld_.m[3][1];
+	worldPos.z = worldTransform_.matWorld_.m[3][2];
+
+	return worldPos;
 }

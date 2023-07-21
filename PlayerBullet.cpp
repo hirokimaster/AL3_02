@@ -28,7 +28,7 @@ void PlayerBullet::Initialize(Model* model, const Vector3& position, const Vecto
 // 更新
 void PlayerBullet::Update() {
 	// 座標を移動させる（1フレーム分の移動量を足しこむ）
-	worldTransform_.translation_ = VectorAdd(worldTransform_.translation_, velocity_);
+	worldTransform_.translation_ = Vec3Add(worldTransform_.translation_, velocity_);
 
 	// 行列を定数バッファに転送
 	worldTransform_.UpdateMatrix();

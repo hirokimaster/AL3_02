@@ -55,14 +55,14 @@
     <Filter Include="ヘッダー ファイル\player">
       <UniqueIdentifier>{a0478771-5cf2-41e7-96e7-12dee49783bd}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ソース ファイル\player">
-      <UniqueIdentifier>{a3a2dc74-d604-4a57-ba03-e9337240a868}</UniqueIdentifier>
-    </Filter>
     <Filter Include="ヘッダー ファイル\Enemy">
       <UniqueIdentifier>{ac29269a-c155-4a44-af97-dc3cbcf816d2}</UniqueIdentifier>
     </Filter>
     <Filter Include="ソース ファイル\Enemy">
       <UniqueIdentifier>{27daf306-663e-457c-ab7b-22c72abba42a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\player">
+      <UniqueIdentifier>{a3a2dc74-d604-4a57-ba03-e9337240a868}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

@@ -23,7 +23,7 @@ void EnemyBullet::Initialize(Model* model, const Vector3& position, const Vector
 // 更新
 void EnemyBullet::Update() {
 	
-	worldTransform_.translation_ = VectorAdd(worldTransform_.translation_, velocity_);
+	worldTransform_.translation_ = Vec3Add(worldTransform_.translation_, velocity_);
 	// ワールドトランスフォームの更新
 	worldTransform_.UpdateMatrix();
 

@@ -3,7 +3,7 @@
 #include <cmath>
 
 // ベクトルの加法
-Vector3 VectorAdd(const Vector3& v1, const Vector3& v2) {
+Vector3 Vec3Add(const Vector3& v1, const Vector3& v2) {
 	Vector3 result;
 	result.x = v1.x + v2.x;
 	result.y = v1.y + v2.y;
@@ -11,6 +11,35 @@ Vector3 VectorAdd(const Vector3& v1, const Vector3& v2) {
 
 	return result;
 }
+
+// 減算
+Vector3 Vec3Subtract(const Vector3& v1, const Vector3& v2) {
+	Vector3 result;
+	result.x = v1.x - v2.x;
+	result.y = v1.y - v2.y;
+	result.z = v1.z - v2.z;
+	return result;
+}
+
+// スカラー倍
+Vector3 Vec3Multiply(float scalar, const Vector3& v) {
+	Vector3 result;
+	result.x = scalar * v.x;
+	result.y = scalar * v.y;
+	result.z = scalar * v.z;
+	return result;
+}
+
+// 正規化
+Vector3 Normalize(const Vector3& v) {
+	Vector3 result;
+	float norm = sqrtf(v.x * v.x + v.y * v.y + v.z * v.z);
+	result.x = v.x / norm;
+	result.y = v.y / norm;
+	result.z = v.z / norm;
+	return result;
+}
+
 
 // 行列の積
 Matrix4x4 Multiply(const Matrix4x4& m1, const Matrix4x4& m2) {

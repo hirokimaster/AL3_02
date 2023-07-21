@@ -5,6 +5,9 @@
 #include "EnemyBullet.h"
 #include <list>
 
+// 自機クラスの前方宣言
+class Player;
+
 // 行動フェーズ
 enum class Phase {
     Approach, // 接近する
@@ -43,6 +46,12 @@ public:
 	// 発射間隔
 	static const int kFireInterval = 60;
 
+	// Playerを借りる
+	void SetPlayer(Player* player) { player_ = player; }
+
+	//ワールド座標を取得
+	Vector3 GetWorldPosition();
+
 private:
 
 	// ワールドトランスフォーム
@@ -57,5 +66,7 @@ private:
 	std::list<EnemyBullet*> bullets_;
 	// 発射タイマー
 	int32_t shotTimer = 0;
+	// 自キャラ
+	Player* player_ = nullptr;
 
 };

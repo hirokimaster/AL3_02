@@ -3,7 +3,16 @@
 #include "Vector3.h"
 
 // 加法
-Vector3 VectorAdd(const Vector3& v1, const Vector3& v2);
+Vector3 Vec3Add(const Vector3& v1, const Vector3& v2);
+
+// 減法
+Vector3 Vec3Subtract(const Vector3& v1, const Vector3& v2);
+
+// スカラー倍
+Vector3 Vec3Multiply(float scalar, const Vector3& v);
+
+// 正規化
+Vector3 Normalize(const Vector3& v);
 
 // 積
 Matrix4x4 Multiply(const Matrix4x4& m1, const Matrix4x4& m2);
