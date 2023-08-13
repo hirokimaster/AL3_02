@@ -36,7 +36,7 @@ public:
 	void OnCollision();
 
 	// 弾リストを取得
-	const std::list<PlayerBullet*>& GetBullet() const { return bullets_; }
+	const std::list<PlayerBullet*>& GetBullets() const { return bullets_; }
 
 private:
 	// ワールド変換データ

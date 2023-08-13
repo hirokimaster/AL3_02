@@ -141,9 +141,13 @@ void GameScene::CheckAllCollisions() {
 	Vector3 posA, posB;
 
 	// 自弾リストの取得
-	const std::list<PlayerBullet*>& playerBullets = player_->GetBullet();
+	//const std::list<PlayerBullet*>& playerBullets = player_->GetBullets();
 	// 敵弾リストの取得
 	const std::list<EnemyBullet*>& enemyBullets = enemy_->GetBullets();
+
+	// 半径
+	const float playerRadius = 25.0f;
+	const float enemyBulletRadius = 25.0f;
 
 #pragma region 自キャラと敵弾の当たり判定
 	// 自キャラの座標
@@ -152,12 +156,20 @@ void GameScene::CheckAllCollisions() {
 	// 自キャラと敵弾すべての当たり判定
 	for (EnemyBullet* bullet : enemyBullets) {
 	    // 敵弾の座標
-		posB = enemy_->GetWorldPosition();
+		posB = bullet->GetWorldPosition();
 
 		// AとBの距離
+		float distance = (posB.x - posA.x) * (posB.x - posA.x) +
+		                 (posB.y - posA.y) * (posB.y - posA.y) +
+		                 (posB.z - posA.z) * (posB.z - posA.z);
 		
 		// 球と球の交差判定
-		
+		if (distance >= (playerRadius + enemyBulletRadius) * (playerRadius + enemyBulletRadius)) {
+		    // 自キャラの衝突時コールバックを呼び出す
+			player_->OnCollision();
+			// 敵弾の衝突時コールバックを呼び出す
+			bullet->OnCollision();
+		}
 	}
 
 #pragma endregion
