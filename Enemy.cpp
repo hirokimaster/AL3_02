@@ -153,3 +153,6 @@ Vector3 Enemy::GetWorldPosition() {
 
 	return worldPos;
 }
+
+// 衝突判定
+void Enemy::OnCollision() {}

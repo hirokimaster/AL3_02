@@ -48,3 +48,8 @@ void PlayerBullet::Draw(const ViewProjection& viewProjection) {
 
 
 }
+
+// 衝突判定
+void PlayerBullet::OnCollision() { 
+	isDead_ = true;
+}

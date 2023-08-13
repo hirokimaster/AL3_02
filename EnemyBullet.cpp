@@ -39,3 +39,8 @@ void EnemyBullet::Draw(const ViewProjection& viewProjection) {
 	model_->Draw(worldTransform_, viewProjection, textureHandle_);	
 
 }
+
+// 衝突判定
+void EnemyBullet::OnCollision() { 
+	isDead_ = true;
+}

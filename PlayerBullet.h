@@ -16,7 +16,11 @@ public:
 	// 描画
 	void Draw(const ViewProjection& viewProjection);	
 
+	// デスフラグ
 	bool IsDead() const { return isDead_; }
+
+	// 衝突判定
+	void OnCollision();
 
 private:
 	// ワールド変換データ

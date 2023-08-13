@@ -32,6 +32,12 @@ public:
 	// ワールド座標を取得
 	Vector3 GetWorldPosition();
 
+	// 衝突判定
+	void OnCollision();
+
+	// 弾リストを取得
+	const std::list<PlayerBullet*>& GetBullet() const { return bullets_; }
+
 private:
 	// ワールド変換データ
 	WorldTransform worldTransform_;

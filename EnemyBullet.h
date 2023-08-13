@@ -20,6 +20,9 @@ public:
 	// 弾のデスフラグ
 	bool IsDead() const { return isDead_; }
 
+	// 衝突判定
+	void OnCollision();
+
 private:
 	// ワールド変換
 	WorldTransform worldTransform_;
