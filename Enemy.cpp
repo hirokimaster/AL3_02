@@ -128,9 +128,9 @@ void Enemy::ApproachUpdate(Vector3& move) {
 	move.z -= enemySpeed;
 	worldTransform_.translation_ = Vec3Add(worldTransform_.translation_, move);
 	// 規定の位置に到達したら離脱
-	if (worldTransform_.translation_.z < 0.0f) {
+	/* if (worldTransform_.translation_.z < 0.0f) {
 		phase_ = Phase::Leave;
-	}
+	}*/
 
 }
 
