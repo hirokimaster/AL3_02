@@ -15,13 +15,14 @@ Player::~Player() {
 }
 
 // 初期化
-void Player::Initialize(Model* model, uint32_t textureHandle) {
+void Player::Initialize(Model* model, uint32_t textureHandle, Vector3& position) {
 	// NULLポインタチェック
 	assert(model);
 
 	// メンバ変数に引数を記録
 	model_ = model;
 	textureHandle_ = textureHandle;
+	worldTransform_.translation_ = position;
 
 	// ワールド変換の初期化
 	worldTransform_.Initialize();
@@ -147,7 +148,9 @@ void Player::Attack() {
 
 	    // 弾を生成し、初期化
 		PlayerBullet* newBullet = new PlayerBullet();
-		newBullet->Initialize(model_, worldTransform_.translation_,velocity);
+		Vector3 WorldPos;
+		WorldPos = GetWorldPosition();
+		newBullet->Initialize(model_, WorldPos, velocity);
 
 		// 弾をセット
 		bullets_.push_back(newBullet);
@@ -169,3 +172,8 @@ Vector3 Player::GetWorldPosition() {
 
 // 衝突判定
 void Player::OnCollision() {}
+
+// 親子関係を結ぶ
+void Player::SetParent(const WorldTransform* parent) { 
+	worldTransform_.parent_ = parent;
+}

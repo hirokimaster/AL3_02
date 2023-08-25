@@ -13,7 +13,7 @@ void Skydome::Initialize(Model* model){
 
 	// 敵の初期座標
 	worldTransform_.translation_ = {0.0f, 0.0f, 0.0f};
-	worldTransform_.scale_ = {100.0f, 100.0f, 100.0f};
+	worldTransform_.scale_ = {500.0f, 500.0f, 500.0f};
 	
 };
 

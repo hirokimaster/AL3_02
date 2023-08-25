@@ -16,6 +16,8 @@ GameScene::~GameScene() {
 	delete debugCamera_;
 	// 天球
 	delete modelSkydome_;
+	// レールカメラ
+	delete railCamera_;
 
 }
 
@@ -32,13 +34,14 @@ void GameScene::Initialize() {
 
 	// ビュープロジェクションの初期化
 	viewProjection_.Initialize();
-	viewProjection_.farZ = 150.0f;
+	viewProjection_.farZ = 500.0f;
 
 	// プレイヤー
 	textureHandlePlayer_ = TextureManager::Load("Player.png");
 	modelPlayer_ = Model::Create();
 	player_ = new Player();
-	player_->Initialize(modelPlayer_, textureHandlePlayer_);
+	Vector3 playerPosition(0, 0, 50);
+	player_->Initialize(modelPlayer_, textureHandlePlayer_, playerPosition);
 
 	// エネミー
 	texturehandleEnemy_ = TextureManager::Load("naitou5.jpg");
@@ -50,6 +53,12 @@ void GameScene::Initialize() {
 	modelSkydome_ = Model::CreateFromOBJ("skydome", true);
 	skydome_ = new Skydome();
 	skydome_->Initialize(modelSkydome_);
+
+	// レールカメラ
+	railCamera_ = new RailCamera();
+	railCamera_->Initialize({0,0,0}, worldTransform_.rotation_);
+	// 自キャラとレールカメラの親子関係を結ぶ
+	player_->SetParent(&railCamera_->GetWorldTransform());
 	
 	// デバックカメラ生成
 	debugCamera_ = new DebugCamera(1920, 1080);
@@ -72,6 +81,15 @@ void GameScene::Update() {
 
 	skydome_->Update();
 
+	railCamera_->Update();
+
+	viewProjection_.matView = railCamera_->GetViewProjection().matView;
+	viewProjection_.matProjection = railCamera_->GetViewProjection().matProjection;
+	// ビュープロジェクション行列の転送
+	viewProjection_.TransferMatrix();
+	
+	
+
 	#ifdef _DEBUG
 	// デバックカメラ有効フラグ
 	if (input_->TriggerKey(DIK_F)) {
@@ -88,11 +106,7 @@ void GameScene::Update() {
 		// ビュープロジェクション行列の転送
 		viewProjection_.TransferMatrix();
 
-	} else {
-		// ビュープロジェクション行列の更新と転送
-		viewProjection_.UpdateMatrix();
-	}
-
+	} 
 }
 
 void GameScene::Draw() {

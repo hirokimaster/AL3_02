@@ -35,3 +35,6 @@ Matrix4x4 MakeRotateZMatrix(float radian);
 
 // アフィン変換
 Matrix4x4 MakeAffineMatrix(const Vector3& scale, const Vector3& rot, const Vector3& translate);
+
+// 逆行列
+Matrix4x4 Inverse(const Matrix4x4& m);
