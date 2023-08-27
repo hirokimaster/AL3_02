@@ -13,8 +13,8 @@ class GameScene;
 
 // 行動フェーズ
 enum class Phase {
-    Approach, // 接近する
-    Leave,    // 離脱する
+	Approach, // 接近する
+	Leave,    // 離脱する
 
 };
 
@@ -42,9 +42,9 @@ public:
 	// 接近フェーズ初期化
 	void ApproachInitialize();
 
-	// swich　フェーズごとの更新
-	void ApproachUpdate(Vector3& move);
-	void Leave(Vector3& move);
+	// フェーズごとの更新
+	void ApproachUpdate();
+	void Leave();
 
 	// 発射間隔
 	static const int kFireInterval = 60;
@@ -71,8 +71,6 @@ private:
 	Model* model_;
 	// テクスチャ
 	uint32_t textureHandle_ = 0u;
-	// フェーズ
-	Phase phase_ = Phase::Approach;
 	// 発射タイマー
 	int32_t shotTimer = 0;
 	// 自キャラ
@@ -81,5 +79,9 @@ private:
 	GameScene* gameScene_ = nullptr;
 	// デスフラグ
 	bool isDead_ = false;
+	// フェーズ
+	Phase phase_ = Phase::Approach;
+	// メンバ関数ポインタ
+	static void (Enemy::*phaseFuncTable[])();
 
 };

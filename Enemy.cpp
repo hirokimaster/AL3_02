@@ -30,12 +30,14 @@ void Enemy::Initialize(Model* model, uint32_t textureHandle, const Vector3& posi
 
 // 更新
 void Enemy::Update(){
+
+	// 現在フェーズの関数を実行
+	(this->*phaseFuncTable[static_cast<size_t>(phase_)])();
+
     // 行列の更新
 	worldTransform_.UpdateMatrix();
 
-	// 移動ベクトル
-	Vector3 move = {0, 0, 0};
-
+	/*
 	// フェーズ
 	switch (phase_) { 
 	case Phase::Approach:
@@ -47,7 +49,7 @@ void Enemy::Update(){
 		Leave(move);
 		break;
 
-	}
+	}*/
 	
 }
 
@@ -79,6 +81,12 @@ void Enemy::Draw(ViewProjection viewProjection) {
 	model_->Draw(worldTransform_, viewProjection, textureHandle_);
 }
 
+// フェーズの関数テーブル
+void (Enemy::*Enemy::phaseFuncTable[])(){
+    &Enemy::ApproachUpdate, // 接近
+    &Enemy::Leave           // 離脱
+};
+
 // 接近フェーズの初期化
 void Enemy::ApproachInitialize() {
 	// 発射タイマーを初期化
@@ -87,8 +95,9 @@ void Enemy::ApproachInitialize() {
 }
 
 // フェーズの更新
-void Enemy::ApproachUpdate(Vector3& move) {
+void Enemy::ApproachUpdate() {
 
+	Vector3 move = {0, 0, 0};
 	// 攻撃
 	// 発射タイマーをデクリメント
 	--shotTimer;
@@ -107,13 +116,14 @@ void Enemy::ApproachUpdate(Vector3& move) {
 	move.z -= enemySpeed;
 	worldTransform_.translation_ = Vec3Add(worldTransform_.translation_, move);
 	// 規定の位置に到達したら離脱
-	/* if (worldTransform_.translation_.z < 0.0f) {
+	if (worldTransform_.translation_.z < 50.0f) {
 		phase_ = Phase::Leave;
-	}*/
+	}
 
 }
 
-void Enemy::Leave(Vector3& move) {
+void Enemy::Leave() {
+	Vector3 move = {0, 0, 0};
 	// 移動速度
 	const float enemySpeed = 0.2f;
 	// 移動
