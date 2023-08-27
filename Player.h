@@ -47,6 +47,9 @@ public:
 
 	Vector3 GetWorldPosition3DReticle();
 
+	// レティクルの処理
+	void Reticle(const ViewProjection& viewProjection, const Vector2& position);
+
     /// <summary>
     /// UI描画
     /// </summary>
