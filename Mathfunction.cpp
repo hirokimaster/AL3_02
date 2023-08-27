@@ -41,6 +41,13 @@ Vector3 Normalize(const Vector3& v) {
 	return result;
 }
 
+// 長さ（ノルム）
+float Length(const Vector3& v) {
+	float result;
+	result = sqrtf(v.x * v.x + v.y * v.y + v.z * v.z);
+	return result;
+}
+
 
 // 行列の積
 Matrix4x4 Multiply(const Matrix4x4& m1, const Matrix4x4& m2) {

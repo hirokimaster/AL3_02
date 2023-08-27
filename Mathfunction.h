@@ -26,6 +26,8 @@ Matrix4x4 MakeTranslateMatrix(const Vector3& translate);
 // ベクトル変換
 Vector3 TransformNormal(const Vector3& v, const Matrix4x4& m);
 
+float Length(const Vector3& v);
+
 // X軸回転
 Matrix4x4 MakeRotateXMatrix(float radian);
 // Y軸回転
