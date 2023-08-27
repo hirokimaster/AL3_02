@@ -1,6 +1,7 @@
 ﻿#include "EnemyBullet.h"
 #include "Mathfunction.h"
 #include <cassert>
+#include "Player.h"
 
 // 初期化
 void EnemyBullet::Initialize(Model* model, const Vector3& position, const Vector3& velocity) {
@@ -32,15 +33,36 @@ void EnemyBullet::Initialize(Model* model, const Vector3& position, const Vector
 
 // 更新
 void EnemyBullet::Update() {
-	
-	worldTransform_.translation_ = Vec3Add(worldTransform_.translation_, velocity_);
+
 	// ワールドトランスフォームの更新
 	worldTransform_.UpdateMatrix();
-
+	
 	if (--deathTimer_ <= 0) {
 		isDead_ = true;
 	}
 
+	Vector3 toPlayer;
+	toPlayer = Vec3Subtract(player_->GetWorldPosition(), GetWorldPosition());
+
+	float t = 0.01f;
+
+	// 正規化
+	Normalize(toPlayer);
+	Normalize(velocity_);
+
+	velocity_ = SLerp(toPlayer, GetWorldPosition(), t);
+
+	worldTransform_.rotation_.y = std::atan2(velocity_.x, velocity_.z);
+
+	Vector3 velocityXZ = {velocity_.x, 0.0f, velocity_.z};
+
+	float veloXZ = Length(velocityXZ);
+
+	worldTransform_.rotation_.z = std::atan2(-velocity_.y, veloXZ);
+
+	worldTransform_.translation_ = Vec3Add(worldTransform_.translation_, velocity_);
+
+	
 }
 
 // 描画

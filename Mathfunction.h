@@ -45,3 +45,13 @@ Matrix4x4 MakeAffineMatrix(const Vector3& scale, const Vector3& rot, const Vecto
 
 // 逆行列
 Matrix4x4 Inverse(const Matrix4x4& m);
+
+float Dot(const Vector3& v1, const Vector3& v2);
+
+// Lerp
+Vector3 Lerp(const Vector3& v1, const Vector3& v2, float t);
+
+// SLerp
+Vector3 SLerp(const Vector3& v1, const Vector3& v2, float t);
+
+Vector3 TransformMove(const Vector3& translate, const Vector3& move);

@@ -58,6 +58,7 @@ void GameScene::Initialize() {
 	texturehandleEnemy_ = TextureManager::Load("naitou5.jpg");
 	modelEnemy_ = Model::Create();
 	LoadEnemyPopData();
+    
 
 	// 天球
 	modelSkydome_ = Model::CreateFromOBJ("skydome", true);
@@ -97,6 +98,7 @@ void GameScene::Update() {
 
 	// 敵弾更新
 	for (EnemyBullet* bullet : enemyBullets_) {
+		bullet->SetPlayer(player_);
 		bullet->Update();
 	}
 

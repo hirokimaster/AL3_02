@@ -1,9 +1,11 @@
 ﻿#pragma once
 #include "Model.h"
+#include "Player.h"
 #include "ViewProjection.h"
 #include "WorldTransform.h"
 
 
+class Player;
 // 敵の弾
 class EnemyBullet {
 public:
@@ -26,6 +28,8 @@ public:
 	// ワールド座標を取得
 	Vector3 GetWorldPosition();
 
+	void SetPlayer(Player* player) { player_ = player; }
+
 private:
 	// ワールド変換
 	WorldTransform worldTransform_;
@@ -41,4 +45,6 @@ private:
 	int32_t deathTimer_ = kLifeTime;
 	// デスフラグ
 	bool isDead_ = false;
+
+	Player* player_ = nullptr;
 };

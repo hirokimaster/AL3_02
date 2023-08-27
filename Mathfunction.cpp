@@ -48,6 +48,56 @@ float Length(const Vector3& v) {
 	return result;
 }
 
+// 内積
+float Dot(const Vector3& v1, const Vector3& v2) {
+	float result;
+	result = v1.x * v2.x + v1.y * v2.y + v1.z * v2.z;
+	return result;
+}
+
+// Lerp
+Vector3 Lerp(const Vector3& v1, const Vector3& v2, float t) {
+	Vector3 p;
+	p.x = v1.x + t * (v2.x - v1.x);
+	p.y = v1.y + t * (v2.y - v1.y);
+	p.z = v1.z + t * (v2.z - v1.z);
+
+	return p;
+}
+
+// SLerp
+Vector3 SLerp(const Vector3& v1, const Vector3& v2, float t) {
+	Vector3 p;
+	Vector3 s;
+	Vector3 e;
+
+	s = Normalize(v1);
+	e = Normalize(v2);
+	float angle = std::acos(Dot(s, e));
+
+	// sin
+	float Sin = std::sin(angle);
+
+	// 補間係数
+	float Ps = std::sin(angle * (1 - t));
+	float Pe = std::sin(angle * t);
+
+	p.x = (Ps * s.x + Pe * e.x) / Sin;
+	p.y = (Ps * s.y + Pe * e.y) / Sin;
+	p.z = (Ps * s.z + Pe * e.z) / Sin;
+
+	p = Normalize(p);
+
+	return p;
+}
+
+Vector3 TransformMove(const Vector3& translate, const Vector3& move) { 
+	Vector3 result;
+	result.x = translate.x + move.x;
+	result.y = translate.y + move.y;
+	result.z = translate.z + move.z;
+	return result;
+}
 
 // 行列の積
 Matrix4x4 Multiply(const Matrix4x4& m1, const Matrix4x4& m2) {
