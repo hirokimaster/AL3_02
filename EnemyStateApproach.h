@@ -1,16 +1,15 @@
 ﻿#pragma once
-
 #include "BaseEnemyState.h"
+#include "Enemy.h"
 
-
+class EnemyStateLeave;
 class StateApproach : public BaseEnemyState {
-	void Update();
+public:
+	void Update(Enemy* pEnemy);
 
 	// 発射間隔
 	static const int kFireInterval = 60;
-	
-private:
-	// 発射タイマー
-	int32_t shotTimer = 0;
 
+private:
+	int32_t shotTimer = 60;
 };

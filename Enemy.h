@@ -12,12 +12,13 @@ class Player;
 // GameSceneの前方宣言
 class GameScene;
 
+/*
 // 行動フェーズ
 enum class Phase {
 	Approach, // 接近する
 	Leave,    // 離脱する
 
-};
+};*/
 
 // 敵
 class Enemy {
@@ -42,18 +43,24 @@ public:
 
 	void changeState(BaseEnemyState* newState);
 
+	void Move();
+
 	// getter
-	Vector3 GetPos(){ return worldTransform_.translation_; }
+	Vector3 GetVelocity() { return velocity_; }
+	Vector3 GetPos(){ return worldTransform_.translation_;}
+
+	// setter
+	void SetVelocity(Vector3 velocity);
 
 	// 接近フェーズ初期化	
-	void ApproachInitialize();
+	//void ApproachInitialize();
 
 	// フェーズごとの更新
 	//void ApproachUpdate();
 	//void Leave();
 
 	// 発射間隔
-	static const int kFireInterval = 60;
+	//static const int kFireInterval = 60;
 
 	// Playerを借りる
 	void SetPlayer(Player* player) { player_ = player; }
@@ -78,7 +85,7 @@ private:
 	// テクスチャ
 	uint32_t textureHandle_ = 0u;
 	// 発射タイマー
-	int32_t shotTimer = 0;
+	//int32_t shotTimer = 0;
 	// 自キャラ
 	Player* player_ = nullptr;
     // ゲームシーン
@@ -86,9 +93,12 @@ private:
 	// デスフラグ
 	bool isDead_ = false;
 	// フェーズ
-	Phase phase_ = Phase::Approach;
+	//Phase phase_ = Phase::Approach;
 	// メンバ関数ポインタ
-	static void (Enemy::*phaseFuncTable[])();
+	//static void (Enemy::*phaseFuncTable[])();
+
+	// 速度
+	Vector3 velocity_;
 
 	BaseEnemyState* state;
 };

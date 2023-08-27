@@ -1,15 +1,10 @@
 ﻿#pragma once
-#include "Enemy.h"
 #include "Mathfunction.h"
-#include "WorldTransform.h"
 
 class Enemy;
 
 class BaseEnemyState {
 public:
-    void Update();
+	virtual void Update(Enemy* pEnemy) = 0;
 
-
-	WorldTransform worldTransform_;
-	Enemy* enemy_;
 };

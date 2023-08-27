@@ -1,7 +1,10 @@
 ﻿#pragma once
 
 #include "BaseEnemyState.h"
+#include "Enemy.h"
 
 class StateLeave : public BaseEnemyState {
-	void Update();
+public:
+
+	void Update(Enemy* pEnemy);
 };

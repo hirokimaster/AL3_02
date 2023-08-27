@@ -1,14 +1,10 @@
 ﻿#include "EnemyStateLeave.h"
+#include "BaseEnemyState.h"
 
-void StateLeave::Update() {
+void StateLeave::Update(Enemy* pEnemy) {
 
-	Vector3 move = {0, 0, 0};
-	// 移動速度
-	const float enemySpeed = 0.2f;
-	// 移動
-	move.x -= enemySpeed;
-	move.y += enemySpeed;
-	worldTransform_.translation_ = enemy_->GetPos();
-	worldTransform_.translation_ = Vec3Add(worldTransform_.translation_, move);
-
+	// 移動量
+	pEnemy->SetVelocity({-0.2f, 0.2f, 0.2f});
+	// 移動処理
+	pEnemy->Move();
 }

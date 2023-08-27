@@ -8,15 +8,10 @@
 #include <list>
 
 // コンストラクタ
-Enemy::Enemy(){
-	// 最初の状態
-	state = new StateApproach();
-};
+Enemy::Enemy(){};
 
 // デストラクタ
-Enemy::~Enemy(){ 
-	delete state;
-};
+Enemy::~Enemy(){};
 
 // 初期化
 void Enemy::Initialize(Model* model, uint32_t textureHandle, const Vector3& position) {
@@ -31,6 +26,8 @@ void Enemy::Initialize(Model* model, uint32_t textureHandle, const Vector3& posi
 	worldTransform_.Initialize();
 	worldTransform_.translation_ = position;
 
+	// 最初の状態
+	state = new StateApproach();
 	//ApproachInitialize();
 
 }
@@ -38,10 +35,10 @@ void Enemy::Initialize(Model* model, uint32_t textureHandle, const Vector3& posi
 // 更新
 void Enemy::Update(){
 
-	state->Update();
+	state->Update(this);
 
 	// 現在フェーズの関数を実行
-	(this->*phaseFuncTable[static_cast<size_t>(phase_)])();
+	//(this->*phaseFuncTable[static_cast<size_t>(phase_)])();
 
     // 行列の更新
 	worldTransform_.UpdateMatrix();
@@ -75,11 +72,11 @@ void Enemy::Fire() {
 	Vector3 enemyWorldPos = GetWorldPosition(); // 敵キャラのワールド座標を取得
 	Vector3 diff = Vec3Subtract(playerWorldPos, enemyWorldPos); // 差分ベクトルを求める
 	Normalize(diff); // 正規化
-	Vector3 velocity = Vec3Multiply(kBulletSpeed, diff); // ベクトルの速度
+    velocity_ = Vec3Multiply(kBulletSpeed, diff); // ベクトルの速度
 
 	// 弾を生成して初期化
 	EnemyBullet* newBullet = new EnemyBullet();
-	newBullet->Initialize(model_, worldTransform_.translation_ , velocity);
+	newBullet->Initialize(model_, worldTransform_.translation_ , velocity_);
 	// 弾をセット
 	gameScene_->AddEnemyBullet(newBullet);
 }
@@ -91,8 +88,19 @@ void Enemy::Draw(ViewProjection viewProjection) {
 }
 
 void Enemy::changeState(BaseEnemyState* newState) { 
-	delete state;
 	state = newState;
+}
+
+// 移動
+void Enemy::Move() {
+	worldTransform_.translation_ = Vec3Add(worldTransform_.translation_, velocity_);
+}
+
+// setter
+void Enemy::SetVelocity(Vector3 velocity) { 
+	velocity_.x = velocity.x;
+	velocity_.y = velocity.y;
+	velocity_.z = velocity.z;
 }
 
 // フェーズの関数テーブル
