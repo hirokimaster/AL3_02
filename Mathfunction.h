@@ -33,6 +33,11 @@ Matrix4x4 MakeRotateYMatrix(float radian);
 // Z軸回転
 Matrix4x4 MakeRotateZMatrix(float radian);
 
+Matrix4x4 MakeViewportMatrix(
+    float left, float top, float width, float heght, float minDepth, float maxDepth);
+
+Vector3 Transform(const Vector3& vector, const Matrix4x4& matrix);
+
 // アフィン変換
 Matrix4x4 MakeAffineMatrix(const Vector3& scale, const Vector3& rot, const Vector3& translate);
 

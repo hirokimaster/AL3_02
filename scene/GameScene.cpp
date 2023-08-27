@@ -44,6 +44,9 @@ void GameScene::Initialize() {
 	viewProjection_.Initialize();
 	viewProjection_.farZ = 500.0f;
 
+	// レティクルのテクスチャ
+	TextureManager::Load("2DReticle.png");
+
 	// プレイヤー
 	textureHandlePlayer_ = TextureManager::Load("Player.png");
 	modelPlayer_ = Model::Create();
@@ -66,7 +69,7 @@ void GameScene::Initialize() {
 	railCamera_->Initialize({0,0,0}, worldTransform_.rotation_);
 	// 自キャラとレールカメラの親子関係を結ぶ
 	player_->SetParent(&railCamera_->GetWorldTransform());
-	
+
 	// デバックカメラ生成
 	debugCamera_ = new DebugCamera(1920, 1080);
 
@@ -74,7 +77,7 @@ void GameScene::Initialize() {
 
 void GameScene::Update() { 
 
-	player_->Update(); 
+	player_->Update(viewProjection_); 
 
 	// 敵更新
 	for (Enemy* enemy : enemys_) {
@@ -191,6 +194,8 @@ void GameScene::Draw() {
 	/// <summary>
 	/// ここに前景スプライトの描画処理を追加できる
 	/// </summary>
+
+	player_->DrawUI();
 
 	// スプライト描画後処理
 	Sprite::PostDraw();

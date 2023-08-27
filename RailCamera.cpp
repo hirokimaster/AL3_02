@@ -20,8 +20,8 @@ void RailCamera::Initialize(const Vector3& position, const Vector3& rotate) {
 void RailCamera::Update() {
 
 	// 移動
-	const float cameraSpeed = -0.5f; // 移動スピード
-	velocity_.z = cameraSpeed;
+	//const float cameraSpeed = -0.5f; // 移動スピード
+	//velocity_.z = cameraSpeed;
 	worldTransform_.translation_ = Vec3Add(worldTransform_.translation_, velocity_);
 
 	// 回転
