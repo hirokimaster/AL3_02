@@ -1,15 +1,22 @@
 ﻿#include "Enemy.h"
 #include "Player.h"
+#include "EnemyStateApproach.h"
+#include "EnemyStateLeave.h"
 #include "Mathfunction.h"
 #include "GameScene.h"
 #include <cassert>
 #include <list>
 
 // コンストラクタ
-Enemy::Enemy(){};
+Enemy::Enemy(){
+	// 最初の状態
+	state = new StateApproach();
+};
 
 // デストラクタ
-Enemy::~Enemy(){};
+Enemy::~Enemy(){ 
+	delete state;
+};
 
 // 初期化
 void Enemy::Initialize(Model* model, uint32_t textureHandle, const Vector3& position) {
@@ -24,12 +31,14 @@ void Enemy::Initialize(Model* model, uint32_t textureHandle, const Vector3& posi
 	worldTransform_.Initialize();
 	worldTransform_.translation_ = position;
 
-	ApproachInitialize();
+	//ApproachInitialize();
 
 }
 
 // 更新
 void Enemy::Update(){
+
+	state->Update();
 
 	// 現在フェーズの関数を実行
 	(this->*phaseFuncTable[static_cast<size_t>(phase_)])();
@@ -81,12 +90,18 @@ void Enemy::Draw(ViewProjection viewProjection) {
 	model_->Draw(worldTransform_, viewProjection, textureHandle_);
 }
 
+void Enemy::changeState(BaseEnemyState* newState) { 
+	delete state;
+	state = newState;
+}
+
 // フェーズの関数テーブル
-void (Enemy::*Enemy::phaseFuncTable[])(){
+/* void (Enemy::*Enemy::phaseFuncTable[])(){
     &Enemy::ApproachUpdate, // 接近
     &Enemy::Leave           // 離脱
-};
+};*/
 
+/*
 // 接近フェーズの初期化
 void Enemy::ApproachInitialize() {
 	// 発射タイマーを初期化
@@ -97,40 +112,14 @@ void Enemy::ApproachInitialize() {
 // フェーズの更新
 void Enemy::ApproachUpdate() {
 
-	Vector3 move = {0, 0, 0};
-	// 攻撃
-	// 発射タイマーをデクリメント
-	--shotTimer;
-
-	// 指定時間に達した
-	if (shotTimer <= 0) {
-		// 弾を発射
-		Fire();
-		// 発射タイマーの初期化
-		shotTimer = kFireInterval;
-	}
-
-	// 移動速度
-	const float enemySpeed = 0.2f;
-	// 移動
-	move.z -= enemySpeed;
-	worldTransform_.translation_ = Vec3Add(worldTransform_.translation_, move);
-	// 規定の位置に到達したら離脱
-	if (worldTransform_.translation_.z < 50.0f) {
-		phase_ = Phase::Leave;
-	}
+	
 
 }
 
 void Enemy::Leave() {
-	Vector3 move = {0, 0, 0};
-	// 移動速度
-	const float enemySpeed = 0.2f;
-	// 移動
-	move.x -= enemySpeed;
-	move.y += enemySpeed;
-	worldTransform_.translation_ = Vec3Add(worldTransform_.translation_, move);
+
 }
+*/
 
 // ワールド座標を取得
 Vector3 Enemy::GetWorldPosition() {

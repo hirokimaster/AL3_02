@@ -3,6 +3,7 @@
 #include "ViewProjection.h"
 #include "WorldTransform.h"
 #include "EnemyBullet.h"
+#include "BaseEnemyState.h"
 #include <list>
 
 // 自機クラスの前方宣言
@@ -39,12 +40,17 @@ public:
 	// 攻撃
 	void Fire();
 
-	// 接近フェーズ初期化
+	void changeState(BaseEnemyState* newState);
+
+	// getter
+	Vector3 GetPos(){ return worldTransform_.translation_; }
+
+	// 接近フェーズ初期化	
 	void ApproachInitialize();
 
 	// フェーズごとの更新
-	void ApproachUpdate();
-	void Leave();
+	//void ApproachUpdate();
+	//void Leave();
 
 	// 発射間隔
 	static const int kFireInterval = 60;
@@ -84,4 +90,5 @@ private:
 	// メンバ関数ポインタ
 	static void (Enemy::*phaseFuncTable[])();
 
+	BaseEnemyState* state;
 };
