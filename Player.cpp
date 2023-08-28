@@ -3,6 +3,7 @@
 #include "Vector3.h"
 #include "Mathfunction.h"
 #include "ImGuiManager.h"
+#include "CollisionConfig.h"
 
 Player::Player() {}
 
@@ -40,6 +41,12 @@ void Player::Initialize(Model* model, uint32_t textureHandle, Vector3& position)
 
 	// 3Dレティクルのワールドトランスフォーム初期化
 	worldTransform3DReticle_.Initialize();
+
+	// 衝突属性を設定
+	SetCollisionAttribute(0);
+	// 衝突対象を自分の属性以外に設定
+	SetCollisionMask(1);
+    
 }
 
 // 更新

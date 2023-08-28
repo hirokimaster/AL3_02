@@ -18,6 +18,12 @@ void EnemyBullet::Initialize(Model* model, const Vector3& position, const Vector
     // 速度
 	velocity_ = velocity;
 
+	// 衝突属性を設定
+	SetCollisionAttribute(1);
+	// 衝突対象を自分の属性以外に設定
+	SetCollisionMask(0);
+    
+
 }
 
 // 更新
