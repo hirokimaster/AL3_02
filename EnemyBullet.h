@@ -2,10 +2,10 @@
 #include "Model.h"
 #include "ViewProjection.h"
 #include "WorldTransform.h"
-
+#include "Collider.h"
 
 // 敵の弾
-class EnemyBullet {
+class EnemyBullet : public Collider {
 public:
 
 	// 初期化
@@ -21,10 +21,12 @@ public:
 	bool IsDead() const { return isDead_; }
 
 	// 衝突判定
-	void OnCollision();
+	//void OnCollision();
+	void OnCollision() override;
 
 	// ワールド座標を取得
-	Vector3 GetWorldPosition();
+	//Vector3 GetWorldPosition();
+	Vector3 GetWorldPosition() const override;
 
 private:
 	// ワールド変換

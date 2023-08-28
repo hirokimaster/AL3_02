@@ -55,7 +55,7 @@ void PlayerBullet::OnCollision() {
 }
 
 // ワールド座標を取得
-Vector3 PlayerBullet::GetWorldPosition() {
+Vector3 PlayerBullet::GetWorldPosition() const {
 	Vector3 worldPos;
 	// ワールド行列の平行移動成分を取得（ワールド座標）
 	worldPos.x = worldTransform_.matWorld_.m[3][0];

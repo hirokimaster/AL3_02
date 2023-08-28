@@ -51,7 +51,7 @@ public: // メンバ関数
 	/// 衝突判定と応答
 	/// </summary>
 	void CheckAllCollisions();
-
+	
 	/// <summary>
 	/// 敵弾を追加する
 	/// </summary>
@@ -75,6 +75,11 @@ public: // メンバ関数
 	/// 敵発生処理
 	/// </summary>
 	void EnemyPop(const Vector3& position);
+
+private:
+	// コライダー二つの衝突判定
+	void CheckCollisionPair(Collider* colliderA, Collider* colliderB);
+
 
 private: // メンバ変数
 	DirectXCommon* dxCommon_ = nullptr;

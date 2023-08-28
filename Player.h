@@ -6,9 +6,10 @@
 #include "PlayerBullet.h"
 #include "Sprite.h"
 #include <list>
+#include "Collider.h"
 
 // 自キャラ
-class Player {
+class Player : public Collider {
 
 public:
 	// コンストラクタ
@@ -31,10 +32,12 @@ public:
 	void Attack();
 
 	// ワールド座標を取得
-	Vector3 GetWorldPosition();
+	//Vector3 GetWorldPosition();
+	Vector3 GetWorldPosition() const override;
 
 	// 衝突判定
-	void OnCollision();
+	//void OnCollision();
+	void OnCollision() override;
 
 	// 弾リストを取得
 	const std::list<PlayerBullet*>& GetBullets() const { return bullets_; }
@@ -55,7 +58,7 @@ public:
     /// </summary>
 	void DrawUI();
 
-
+	
 private:
 	// ワールド変換データ
 	WorldTransform worldTransform_;

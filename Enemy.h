@@ -4,6 +4,7 @@
 #include "WorldTransform.h"
 #include "EnemyBullet.h"
 #include <list>
+#include "Collider.h"
 
 // 自機クラスの前方宣言
 class Player;
@@ -19,7 +20,7 @@ enum class Phase {
 };
 
 // 敵
-class Enemy {
+class Enemy : public Collider {
 public:
 	// コンストラクタ
 	Enemy();
@@ -53,10 +54,12 @@ public:
 	void SetPlayer(Player* player) { player_ = player; }
 
 	//ワールド座標を取得
-	Vector3 GetWorldPosition();
+	//Vector3 GetWorldPosition();
+	Vector3 GetWorldPosition() const override;
 
 	// 衝突判定
-	void OnCollision();
+	//void OnCollision();
+	void OnCollision() override;	
 
 	void SetGameScene(GameScene* gameScene) { gameScene_ = gameScene; }
 
