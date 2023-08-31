@@ -3,6 +3,8 @@
 #include "Mathfunction.h"
 #include <cassert>
 #include <list>
+#include "Collider.h"
+#include "CollisionConfig.h"
 
 // コンストラクタ
 Enemy::Enemy(){};
@@ -31,6 +33,7 @@ void Enemy::Initialize(Model* model, uint32_t textureHandle) {
 
 	ApproachInitialize();
 
+	
 }
 
 // 更新

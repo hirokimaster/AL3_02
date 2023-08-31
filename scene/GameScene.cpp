@@ -4,23 +4,10 @@
 #include "Player.h"
 #include "Enemy.h"
 #include "AxisIndicator.h"
+#include "Collider.h"
+#include <list>
 
-GameScene::GameScene() {
-	// ビュープロジェクションの初期化
-	viewProjection_.Initialize();
-
-	// プレイヤー
-	textureHandlePlayer_ = TextureManager::Load("Player.png");
-	modelPlayer_ = Model::Create();
-	player_ = new Player();
-	player_->Initialize(modelPlayer_, textureHandlePlayer_);
-
-	// エネミー
-	texturehandleEnemy_ = TextureManager::Load("naitou5.jpg");
-	modelEnemy_ = Model::Create();
-	enemy_ = new Enemy();
-	enemy_->Initialize(modelEnemy_, texturehandleEnemy_);
-}
+GameScene::GameScene() {}
 
 GameScene::~GameScene() {
 	// プレイヤー
@@ -48,6 +35,21 @@ void GameScene::Initialize() {
 	AxisIndicator::GetInstance()->SetVisible(true);
 	// 軸方向表示が参照するビュープロジェクションを指定する（アドレス渡し）
 	AxisIndicator::GetInstance()->SetTargetViewProjection(&viewProjection_);
+
+	// ビュープロジェクションの初期化
+	viewProjection_.Initialize();
+
+	// プレイヤー
+	textureHandlePlayer_ = TextureManager::Load("Player.png");
+	modelPlayer_ = Model::Create();
+	player_ = new Player();
+	player_->Initialize(modelPlayer_, textureHandlePlayer_);
+
+	// エネミー
+	texturehandleEnemy_ = TextureManager::Load("naitou5.jpg");
+	modelEnemy_ = Model::Create();
+	enemy_ = new Enemy();
+	enemy_->Initialize(modelEnemy_, texturehandleEnemy_);
 
 }
 
@@ -147,7 +149,11 @@ void GameScene::CheckAllCollisions() {
 	// 敵弾リストの取得
 	const std::list<EnemyBullet*>& enemyBullets = enemy_->GetBullets();
 
-	
+	// コライダー
+	std::list<Collider*> colliders_;
+	// コライダーをリストに登録
+	colliders_.push_back(player_);
+	colliders_.push_back();
 
 #pragma region 自キャラと敵弾の当たり判定
 	// 自キャラの座標
