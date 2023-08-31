@@ -2,7 +2,6 @@
 #include <cassert>
 #include "Vector3.h"
 #include "Mathfunction.h"
-#include "ImGuiManager.h"
 
 Player::Player() {}
 
@@ -101,13 +100,13 @@ void Player::Update(const ViewProjection& viewProjection) {
 	*/
 
 
-	POINT mousePosition;
+	//POINT mousePosition;
 	// マウス座標(スクリーン座標)を取得する
-	GetCursorPos(&mousePosition);
+	//GetCursorPos(&mousePosition);
 
 	// クライアントエリア座標に変換する
-	HWND hwnd = WinApp::GetInstance()->GetHwnd();
-	ScreenToClient(hwnd, &mousePosition);
+	//HWND hwnd = WinApp::GetInstance()->GetHwnd();
+	//ScreenToClient(hwnd, &mousePosition);
 
 	Vector2 spritePosition = sprite2DReticle_->GetPosition();
 
@@ -243,7 +242,7 @@ void Player::Reticle(const ViewProjection& viewProjection, const Vector2& positi
 	
 	// ビューポート行列
 	Matrix4x4 matViewport =
-	    MakeViewportMatrix(0, 0, WinApp::kWindowWidth, WinApp::kWindowHeight, 0, 1);
+	    MakeViewportMatrix(0, 0, 1280, 720, 0, 1);
 
 	// ビュープロジェクションビューポート合成行列
 	Matrix4x4 matVPN =

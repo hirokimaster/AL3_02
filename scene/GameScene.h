@@ -10,7 +10,7 @@
 #include "WorldTransform.h"
 #include "Player.h"
 #include "Enemy.h"
-#include "DebugCamera.h"
+//#include "DebugCamera.h"
 #include "Skydome.h"
 #include "RailCamera.h"
 #include <list>
@@ -91,9 +91,9 @@ private: // メンバ変数
 	Audio* audio_ = nullptr;
 
 	// デバッグカメラ有効
-	bool isDebugCameraActive_ = false;
+	//bool isDebugCameraActive_ = false;
 	// デバックカメラ
-	DebugCamera* debugCamera_ = nullptr;
+	//DebugCamera* debugCamera_ = nullptr;
 
 	WorldTransform worldTransform_;
 	ViewProjection viewProjection_;

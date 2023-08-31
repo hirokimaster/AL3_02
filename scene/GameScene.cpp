@@ -17,7 +17,7 @@ GameScene::~GameScene() {
 	}
 
 	// デバックカメラ
-	delete debugCamera_;
+	//delete debugCamera_;
 	// 天球
 	delete modelSkydome_;
 	// レールカメラ
@@ -98,7 +98,7 @@ void GameScene::Initialize() {
 
 
 	// デバックカメラ生成
-	debugCamera_ = new DebugCamera(1920, 1080);
+	//debugCamera_ = new DebugCamera(1920, 1080);
 
 }
 // スコア表示
@@ -239,6 +239,7 @@ void GameScene::Update() {
 		break;
 	}
 
+	/*
 	#ifdef _DEBUG
 	// デバックカメラ有効フラグ
 	if (input_->TriggerKey(DIK_F)) {
@@ -256,6 +257,7 @@ void GameScene::Update() {
 		viewProjection_.TransferMatrix();
 
 	} 
+	*/
 }
 
 void GameScene::Draw() {
