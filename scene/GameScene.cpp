@@ -47,8 +47,16 @@ void GameScene::Initialize() {
 	// レティクルのテクスチャ
 	TextureManager::Load("2DReticle.png");
 
+	// タイトル（2Dスプライト)
+	textureHandleTitle_ = TextureManager::Load("title.png");
+	spriteTitle_ = Sprite::Create(textureHandleTitle_, {0, 0});
+
+	// ゲームオーバー
+	textureHandleGameOver_ = TextureManager::Load("gameover.png");
+	spriteGameOver_ = Sprite::Create(textureHandleGameOver_, {0, 0});
+
 	// プレイヤー
-	textureHandlePlayer_ = TextureManager::Load("Player.png");
+	textureHandlePlayer_ = TextureManager::Load("player.jpg");
 	modelPlayer_ = Model::Create();
 	player_ = new Player();
 	Vector3 playerPosition(0, 0, 50);
@@ -70,57 +78,166 @@ void GameScene::Initialize() {
 	// 自キャラとレールカメラの親子関係を結ぶ
 	player_->SetParent(&railCamera_->GetWorldTransform());
 
+	// スコア数値
+	textureHandleNumber_ = TextureManager::Load("number.png");
+	for (int i = 0; i < 5; i++) {
+		spriteNumber_[i] = Sprite::Create(textureHandleNumber_, {300.0f + i * 26, 0});
+	}
+
+	// スコア
+	textureHandleScore_ = TextureManager::Load("score.png");
+	spriteScore_ = Sprite::Create(textureHandleScore_, {150.0f, 0});
+
+	// ライフ
+	for (int i = 0; i < 3; i++) {
+		spriteLife_[i] = Sprite::Create(textureHandlePlayer_, {800.0f + i * 60, 0});
+		spriteLife_[i]->SetSize({40, 40});
+	}
+
+
+
+
 	// デバックカメラ生成
 	debugCamera_ = new DebugCamera(1920, 1080);
 
 }
+// スコア表示
+void GameScene::DrawScore() {
+
+	int eachNumber[5] = {};
+	int number = gameScore_;
+	int keta = 10000;
+	for (int i = 0; i < 5; i++) {
+		eachNumber[i] = number / keta;
+		number = number % keta;
+		keta = keta / 10;
+	}
+
+	// 描画
+	for (int i = 0; i < 5; i++) {
+		spriteNumber_[i]->SetSize({32, 64});
+		spriteNumber_[i]->SetTextureRect({32.0f * eachNumber[i], 0}, {32, 64});
+		spriteNumber_[i]->Draw();
+	}
+
+	for (int i = 0; i < playerLife_; i++) {
+		spriteLife_[i]->Draw();
+	}
+
+	spriteScore_->Draw();
+}
 
 void GameScene::Update() { 
 
-	player_->Update(viewProjection_); 
+	XINPUT_STATE joyState;
 
-	// 敵更新
-	for (Enemy* enemy : enemys_) {
-		enemy->Update();
+	// ゲームパッド未接続なら何もせず抜ける
+	if (!Input::GetInstance()->GetJoystickState(0, joyState)) {
+		return;
 	}
 
-	UpdateEnemyPopCommands();
+	// シーン切り替え
+	switch (sceneMode_) {
 
-	// デスフラグが立ったら敵を削除
-	enemys_.remove_if([](Enemy* enemy) {
-		if (enemy->IsDead()) {
-			delete enemy;
-			return true;
+	case 0:
+		
+	player_->Update(viewProjection_);
+
+		// 敵更新
+		for (Enemy* enemy : enemys_) {
+			enemy->Update();
 		}
-		return false;
-	});
 
-	// 敵弾更新
-	for (EnemyBullet* bullet : enemyBullets_) {
-		bullet->Update();
+		UpdateEnemyPopCommands();
+
+		// デスフラグが立ったら敵を削除
+		enemys_.remove_if([](Enemy* enemy) {
+			if (enemy->IsDead()) {
+				delete enemy;
+				return true;
+			}
+			return false;
+		});
+
+		// 敵弾更新
+		for (EnemyBullet* bullet : enemyBullets_) {
+			bullet->Update();
+		}
+
+		// デスフラグが立ったら敵弾を削除
+		enemyBullets_.remove_if([](EnemyBullet* bullet) {
+			if (bullet->IsDead()) {
+				delete bullet;
+				return true;
+			}
+			return false;
+		});
+
+		CheckAllCollisions();
+
+		skydome_->Update();
+
+		railCamera_->Update();
+
+		viewProjection_.matView = railCamera_->GetViewProjection().matView;
+		viewProjection_.matProjection = railCamera_->GetViewProjection().matProjection;
+		// ビュープロジェクション行列の転送
+		viewProjection_.TransferMatrix();
+
+		for (Enemy* enemy : enemys_) {
+			if (enemy->IsDead()) {
+				gameScore_ += 100;
+			}
+		}
+
+		if (playerLife_ <= 0) {
+			gameOver_ = true;
+		}
+
+		if (gameOver_) {
+			sceneMode_ = 2;
+			
+
+		}
+
+		break;
+
+	case 1:
+
+		// エンターキー押したとき　(タイトルからプレイ）
+		if (joyState.Gamepad.wButtons & XINPUT_GAMEPAD_A) {
+
+			sceneMode_ = 0;
+	
+		}
+		
+		break;
+
+	case 2:
+		if (gameOver_) {
+
+			// 自弾リストの取得
+			const std::list<PlayerBullet*>& playerBullets = player_->GetBullets();
+
+			for (Enemy* enemy : enemys_) {
+				enemy->OnCollision();
+			}
+
+			for (EnemyBullet* enemyBullet : enemyBullets_) {
+				enemyBullet->OnCollision();
+			}
+
+			for (PlayerBullet* playerBullet : playerBullets) {
+				playerBullet->OnCollision();
+			}
+	
+			if (joyState.Gamepad.wButtons & XINPUT_GAMEPAD_A) {
+				GameStart();
+				sceneMode_ = 1;
+			}
+		}
+		break;
 	}
-
-	// デスフラグが立ったら敵弾を削除
-	enemyBullets_.remove_if([](EnemyBullet* bullet) {
-		if (bullet->IsDead()) {
-			delete bullet;
-			return true;
-		}
-		return false;
-	});
-
-	CheckAllCollisions();
-
-	skydome_->Update();
-
-	railCamera_->Update();
-
-	viewProjection_.matView = railCamera_->GetViewProjection().matView;
-	viewProjection_.matProjection = railCamera_->GetViewProjection().matProjection;
-	// ビュープロジェクション行列の転送
-	viewProjection_.TransferMatrix();
-	
-	
 
 	#ifdef _DEBUG
 	// デバックカメラ有効フラグ
@@ -153,6 +270,24 @@ void GameScene::Draw() {
 	/// <summary>
 	/// ここに背景スプライトの描画処理を追加できる
 	/// </summary>
+	
+	// シーン切り替え
+	switch (sceneMode_) {
+
+	case 1:
+		// タイトル表示
+		spriteTitle_->Draw();
+
+		break;
+
+	case 2:
+		if (gameOver_) {
+			// ゲームオーバー
+			spriteGameOver_->Draw();
+		}
+		break;
+	}
+	
 
 	// スプライト描画後処理
 	Sprite::PostDraw();
@@ -166,19 +301,28 @@ void GameScene::Draw() {
 
 	/// <summary>
 
-	player_->Draw(viewProjection_);
+	switch (sceneMode_) {
 
-	// 敵
-	for (Enemy* enemy : enemys_) {
-		enemy->Draw(viewProjection_);
-	}
+	case 0:
+		
+		player_->Draw(viewProjection_);
 
-	// 敵弾
-	for (EnemyBullet* bullet : enemyBullets_) {
-		bullet->Draw(viewProjection_);
+		// 敵
+		for (Enemy* enemy : enemys_) {
+			enemy->Draw(viewProjection_);
+		}
+
+		// 敵弾
+		for (EnemyBullet* bullet : enemyBullets_) {
+			bullet->Draw(viewProjection_);
+		}
+
+		skydome_->Draw(viewProjection_);
+
+		break;
+
 	}
-	   
-	skydome_->Draw(viewProjection_);
+	
 
 	/// ここに3Dオブジェクトの描画処理を追加できる
 	/// </summary>
@@ -195,8 +339,16 @@ void GameScene::Draw() {
 	/// ここに前景スプライトの描画処理を追加できる
 	/// </summary>
 
-	player_->DrawUI();
+	switch (sceneMode_) {
 
+	case 0:
+
+		DrawScore();
+		player_->DrawUI();
+
+		break;
+	}
+	
 	// スプライト描画後処理
 	Sprite::PostDraw();
 
@@ -243,6 +395,8 @@ void GameScene::CheckAllCollisions() {
 			player_->OnCollision();
 			// 敵弾の衝突時コールバックを呼び出す
 			bullet->OnCollision();
+
+			playerLife_ -= 1;
 		}
 	}
 
@@ -274,6 +428,7 @@ void GameScene::CheckAllCollisions() {
 				enemy->OnCollision();
 				// 自弾の衝突時コールバックを呼び出す
 				bullet->OnCollision();
+			
 			}
 		}
 	
@@ -308,6 +463,7 @@ void GameScene::CheckAllCollisions() {
 				bullet->OnCollision();
 				// 敵弾の衝突時コールバックを呼び出す
 				enemyBullet->OnCollision();
+
 			}
 		}
 	}
@@ -409,4 +565,19 @@ void GameScene::UpdateEnemyPopCommands() {
 			break;
 		}
 	}
+}
+
+void GameScene::GameStart() {
+
+	Vector3 playerPosition(0, 0, 50);
+	player_->Initialize(modelPlayer_, textureHandlePlayer_, playerPosition);
+
+
+	LoadEnemyPopData();
+
+	gameOver_ = false;
+	playerLife_ = 3;
+	gameScore_ = 0;
+
+	railCamera_->Initialize({0, 0, 0}, worldTransform_.rotation_);
 }

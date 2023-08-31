@@ -76,6 +76,15 @@ public: // メンバ関数
 	/// </summary>
 	void EnemyPop(const Vector3& position);
 
+    /// <summary>
+    /// game開始前初期化
+    /// </summary>
+	void GameStart();
+
+	// スコア数値
+	void DrawScore();
+
+
 private: // メンバ変数
 	DirectXCommon* dxCommon_ = nullptr;
 	Input* input_ = nullptr;
@@ -113,6 +122,26 @@ private: // メンバ変数
 	bool wait = false;
 	// 待機中タイマー
 	uint32_t waitTimer = 0;
+
+	// タイトル（スプライト）
+	uint32_t textureHandleTitle_ = 0;
+	Sprite* spriteTitle_ = nullptr;
+	// シーン
+	int32_t sceneMode_ = 1;
+
+	// ゲームオーバー
+	uint32_t textureHandleGameOver_ = 0;
+	Sprite* spriteGameOver_ = nullptr;
+	bool gameOver_ = false;
+
+	// スコア
+	uint32_t textureHandleNumber_ = 0;
+	Sprite* spriteNumber_[5];
+	uint32_t textureHandleScore_ = 0;
+	Sprite* spriteScore_ = nullptr;
+	int32_t gameScore_ = 0;
+	Sprite* spriteLife_[3];
+	int32_t playerLife_ = 3;
 
 	/// <summary>
 	/// ゲームシーン用

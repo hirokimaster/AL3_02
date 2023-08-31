@@ -76,7 +76,8 @@ void Enemy::Fire() {
 // 描画
 void Enemy::Draw(ViewProjection viewProjection) {
 	
-	model_->Draw(worldTransform_, viewProjection, textureHandle_);
+		model_->Draw(worldTransform_, viewProjection, textureHandle_);
+	
 }
 
 // 接近フェーズの初期化
@@ -106,10 +107,11 @@ void Enemy::ApproachUpdate(Vector3& move) {
 	// 移動
 	move.z -= enemySpeed;
 	worldTransform_.translation_ = Vec3Add(worldTransform_.translation_, move);
+
 	// 規定の位置に到達したら離脱
-	/* if (worldTransform_.translation_.z < 0.0f) {
+	if (worldTransform_.translation_.z < 0.0f) {
 		phase_ = Phase::Leave;
-	}*/
+	}
 
 }
 
@@ -136,4 +138,5 @@ Vector3 Enemy::GetWorldPosition() {
 // 衝突判定
 void Enemy::OnCollision() { 
 	isDead_ = true;
+
 }

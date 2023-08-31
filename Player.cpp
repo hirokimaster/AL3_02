@@ -88,6 +88,7 @@ void Player::Update(const ViewProjection& viewProjection) {
 	
 	}
 
+	/*
 	// 移動限界
 	const float kMoveLimitX = 34.0f;
 	const float kMoveLimitY = 18.0f;
@@ -97,6 +98,8 @@ void Player::Update(const ViewProjection& viewProjection) {
 	worldTransform_.translation_.x = min(worldTransform_.translation_.x, kMoveLimitX);
 	worldTransform_.translation_.y = max(worldTransform_.translation_.y, -kMoveLimitY);
 	worldTransform_.translation_.y = min(worldTransform_.translation_.y, kMoveLimitY);
+	*/
+
 
 	POINT mousePosition;
 	// マウス座標(スクリーン座標)を取得する
@@ -264,6 +267,7 @@ void Player::Reticle(const ViewProjection& viewProjection, const Vector2& positi
 	worldTransform3DReticle_.translation_ = Vec3Multiply(kDistanceTestObject, mouseDirection);
 	worldTransform3DReticle_.UpdateMatrix();
 
+	/*
 	ImGui::Begin("Player");
 	ImGui::Text("2DReticle:(%f,%f)", position.x, position.y);
 	ImGui::Text("Near:(%+.2f,%+.2f,%+.2f", posNear.x, posNear.y, posNear.z);
@@ -272,5 +276,6 @@ void Player::Reticle(const ViewProjection& viewProjection, const Vector2& positi
 	    "3DReticle:(%+.2f,%+.2f,%+.2f", worldTransform3DReticle_.translation_.x,
 	    worldTransform3DReticle_.translation_.y, worldTransform3DReticle_.translation_.z);
 	ImGui::End();
+	*/
 
 }
